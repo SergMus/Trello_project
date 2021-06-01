@@ -2,7 +2,7 @@
   "name": "trello",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://sergmus.github.io/Trello_project",
+  "homepage": "https://sergmus.github.io/Trello_project/",
   "dependencies": {
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
