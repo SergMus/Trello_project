@@ -1,0 +1,119 @@
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  overflow-y: auto;
+}
+.tabe_panel_header {
+  background-color: #f4f5f7;
+}
+.tabe_panel_header_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 650px;
+  padding: 32px;
+  position: relative;
+}
+.tabe_panel_header_content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+.logo_wrapp {
+  background-color: #dfe1e6;
+  border-radius: 100%;
+  color: #172b4d;
+  display: inline-flex;
+  font-weight: bold;
+  justify-content: center;
+  font-size: 22px;
+  height: 48px;
+  width: 48px;
+  line-height: 48px;
+  margin-right: 16px;
+}
+.nickname_wrapp {
+  display: flex;
+  align-items: baseline;
+}
+.nickname_wrapp_span1 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+  color: #0c3953;
+  margin-right: 10px;
+}
+.nickname_wrapp_span2 {
+  font-size: 12px;
+  line-height: 20px;
+  color: #5e6c84;
+}
+.tabe_panel_main {
+  max-width: 900px;
+  margin: 0 auto;
+  max-width: 850px;
+  padding: 32px;
+  position: relative;
+}
+.tabe_panel_main_container {
+  width: 100%;
+  max-width: 530px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.image_content {
+  display: block;
+  margin: 18px auto 42px auto;
+  max-width: 100%;
+  height: auto;
+}
+.hr {
+  size: 1px;
+  width: 100%;
+}
+.form_container {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 355px;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: 12px 0;
+  color: #172b4d;
+  font-weight: 500;
+}
+.inp {
+  outline: none;
+  border: none;
+  box-sizing: border-box;
+  color: #172b4d;
+  font-size: 14px;
+  border-radius: 3px;
+  padding: 8px 12px;
+  box-shadow: inset 0 0 0 2px #dfe1e6;
+  background-color: #fafbfc;
+  margin: 5px 0;
+  transition: background-color 0.5s ease;
+}
+.inp:hover {
+  background-color: rgba(235, 235, 235, 0.5);
+  box-shadow: inset 0 0 0 2px #c6c7c9;
+}
+.submitBtn {
+  outline: none;
+  border: none;
+  box-sizing: border-box;
+  color: #ebedf1;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 8px 12px;
+  background-color: #2776c5;
+  width: 70%;
+  cursor: pointer;
+}

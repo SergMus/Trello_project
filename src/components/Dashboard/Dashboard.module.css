@@ -1,6 +1,6 @@
 .board {
-  width: "200px";
-  height: "200px";
-  border: "1px solid black";
-  margin-right: "20px";
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  margin-right: 20px;
 }
