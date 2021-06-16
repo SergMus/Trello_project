@@ -9,8 +9,6 @@ interface OauthProps extends RouteChildrenProps {
   onSetBoards: (boards: any) => void;
   onSetProfile: (userProfile: any) => void;
   token_storage_key: string;
-  profile: string;
-  userBoards: string;
 }
 
 export const Oauth: FunctionComponent<OauthProps> = ({
@@ -19,8 +17,6 @@ export const Oauth: FunctionComponent<OauthProps> = ({
   onSetBoards,
   onSetProfile,
   token_storage_key,
-  userBoards,
-  profile,
 }: OauthProps) => {
   const token = hash.split("=")[1];
   onSetToken(token);
@@ -32,7 +28,6 @@ export const Oauth: FunctionComponent<OauthProps> = ({
     .then((response) => response.json())
     .then((data) => {
       onSetBoards(data);
-      setToLocalStorage(userBoards, data);
     });
   fetch(
     `https://api.trello.com/1/members/me/actions/?fields=avatarHash,fullName,initials,username&key=${process.env.REACT_APP_API_KEY}&token=${token}`
@@ -40,7 +35,6 @@ export const Oauth: FunctionComponent<OauthProps> = ({
     .then((response) => response.json())
     .then((data) => {
       onSetProfile(data);
-      setToLocalStorage(profile, data);
     });
 
   return <Redirect to={ROUTE_URLS.DASHBOARD} />;

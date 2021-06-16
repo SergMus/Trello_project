@@ -28,7 +28,7 @@ export const routes: Array<AppRoutes> = [
   {
     path: ROUTE_URLS.LOGIN,
     render: (props: any) => <Login {...props} />,
-    title: "Home",
+    title: "Login",
   },
   {
     path: ROUTE_URLS.DASHBOARD,
@@ -46,7 +46,7 @@ export const routes: Array<AppRoutes> = [
     path: ROUTE_URLS.HOME,
     exact: true,
     isHidden: true,
-    render: (props: any) => <Redirect to={ROUTE_URLS.LOGIN} />,
+    render: (props: any) => <Redirect to={ROUTE_URLS.DASHBOARD} />,
   },
   {
     path: ROUTE_URLS.NOT_FOUND,

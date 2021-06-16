@@ -23,8 +23,6 @@ const INITIAL_STATE = {
   userProfile: undefined,
 };
 const TOKEN_STRORAGE_KEY = "TOKEN";
-const USER_PROFILE = "USER_PROFILE";
-const USER_BOARDS = "BOARDS";
 
 interface Board {
   id: string;
@@ -54,9 +52,6 @@ class App extends React.Component<any, AppState> {
   private setProfile = (userProfile: any) => {
     this.setState({ userProfile });
   };
-  private updateUserStatus = (userProfile: any) => {
-    this.setState({ userProfile });
-  };
 
   private get isLoggedIn() {
     return !!this.state.token;
@@ -65,26 +60,33 @@ class App extends React.Component<any, AppState> {
   componentDidMount() {
     this.getToken();
   }
-  private getToken() {
-    console.log("hi");
 
-    // if (!this.state.token) {
-    //   return this.redirectToLogin();
-    // }
+  private async getToken() {
+    if (this.state.token) {
+      return;
+    }
     const storageToken = getFromLocalStorage<string>(TOKEN_STRORAGE_KEY);
     if (!storageToken) {
       return this.redirectToLogin();
+    } else {
+      this.setToken(storageToken);
     }
+    fetch(
+      `https://api.trello.com/1/members/me/actions/?fields=avatarHash,fullName,initials,username&key=${process.env.REACT_APP_API_KEY}&token=${storageToken}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.setProfile(data);
+      });
+    fetch(
+      `https://api.trello.com/1/members/me/boards?fields=name,url&key=${process.env.REACT_APP_API_KEY}&token=${storageToken}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.setBoards(data);
+      });
 
-    const storageBoards = getFromLocalStorage<Array<Board>>(USER_BOARDS);
-    if (storageToken && !this.state.token) {
-      return this.setState(
-        { token: storageToken, boards: storageBoards },
-        () => {
-          this.redirectToDashboard();
-        }
-      );
-    }
+    return this.redirectToDashboard();
   }
 
   redirectToLogin() {
@@ -95,9 +97,6 @@ class App extends React.Component<any, AppState> {
     this.props.history.push(ROUTE_URLS.DASHBOARD);
   }
 
-  redirectToOauth() {
-    this.props.history.push(ROUTE_URLS.OAUTH);
-  }
   private logOut = () => {
     this.setState(INITIAL_STATE);
     return this.redirectToLogin();
@@ -192,6 +191,8 @@ class App extends React.Component<any, AppState> {
   }
 
   private renderContent() {
+    console.log(this.state);
+
     return (
       <main>
         <Switch>
@@ -205,8 +206,6 @@ class App extends React.Component<any, AppState> {
                 onSetBoards={this.setBoards}
                 onSetProfile={this.setProfile}
                 token_storage_key={TOKEN_STRORAGE_KEY}
-                userBoards={USER_BOARDS}
-                profile={USER_PROFILE}
               />
             )}
           />
