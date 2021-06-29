@@ -16,79 +16,11 @@ import { routes, AppRoutes, ROUTE_URLS } from "./routes";
 import { Oauth } from "../Auth/Oauth";
 import { PrivateRoute } from "../ProtectedRoute";
 import styles from "./../App/App.module.css";
+import { Header } from "../Header/Header";
+import { connect } from "react-redux";
+import { resetState } from "../../store";
 
-const INITIAL_STATE = {
-  token: "",
-  boards: [],
-  userProfile: undefined,
-};
-const TOKEN_STRORAGE_KEY = "TOKEN";
-
-interface Board {
-  id: string;
-  name: string;
-  url: string;
-  pinned?: boolean;
-  desc?: string;
-}
-
-interface AppState {
-  token: string;
-  boards: Array<Board>;
-  userProfile: any;
-}
-
-class App extends React.Component<any, AppState> {
-  public state = INITIAL_STATE;
-
-  private setToken = (token: string) => {
-    this.setState({ token });
-  };
-
-  private setBoards = (boards: Array<Board>) => {
-    this.setState({ boards });
-  };
-
-  private setProfile = (userProfile: any) => {
-    this.setState({ userProfile });
-  };
-
-  private get isLoggedIn() {
-    return !!this.state.token;
-  }
-
-  componentDidMount() {
-    this.getToken();
-  }
-
-  private async getToken() {
-    if (this.state.token) {
-      return;
-    }
-    const storageToken = getFromLocalStorage<string>(TOKEN_STRORAGE_KEY);
-    if (!storageToken) {
-      return this.redirectToLogin();
-    } else {
-      this.setToken(storageToken);
-    }
-    fetch(
-      `https://api.trello.com/1/members/me/actions/?fields=avatarHash,fullName,initials,username&key=${process.env.REACT_APP_API_KEY}&token=${storageToken}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        this.setProfile(data);
-      });
-    fetch(
-      `https://api.trello.com/1/members/me/boards?fields=name,url&key=${process.env.REACT_APP_API_KEY}&token=${storageToken}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        this.setBoards(data);
-      });
-
-    return this.redirectToDashboard();
-  }
-
+class App extends React.Component<any> {
   redirectToLogin() {
     this.props.history.push(ROUTE_URLS.LOGIN);
   }
@@ -98,116 +30,17 @@ class App extends React.Component<any, AppState> {
   }
 
   private logOut = () => {
-    this.setState(INITIAL_STATE);
-    return this.redirectToLogin();
+    this.redirectToLogin();
   };
 
-  private renderHeader() {
-    return (
-      <header className={styles.header}>
-        <div className={styles.header_container}>
-          <div className={styles.left_menu}>
-            <div className={styles.btn_menu}>
-              <NavLink
-                to="/"
-                activeClassName={styles.active}
-                style={{ textDecoration: "none" }}
-              >
-                <span className={styles.btn_span}>
-                  <i className="fas fa-th"></i>
-                </span>
-              </NavLink>
-            </div>
-            <div className={styles.btn_menu}>
-              <NavLink
-                to={ROUTE_URLS.LOGIN}
-                activeClassName={styles.active}
-                style={{ textDecoration: "none" }}
-              >
-                <span className={styles.btn_span}>
-                  <i className="fas fa-home"></i>
-                </span>
-              </NavLink>
-            </div>
-            <div className={styles.btn_menu}>
-              <NavLink
-                to={ROUTE_URLS.DASHBOARD}
-                activeClassName={styles.active}
-                style={{ display: "flex", textDecoration: "none" }}
-              >
-                <span className={styles.btn_span}>
-                  <i className="fab fa-trello"></i>
-                </span>
-                <span className={styles.btn_span_name}>Доски</span>
-              </NavLink>
-            </div>
-          </div>
-          <div className={styles.center_menu}>
-            <NavLink
-              to={ROUTE_URLS.HOME}
-              activeClassName={styles.active}
-              style={{
-                display: "flex",
-                textDecoration: "none",
-              }}
-            >
-              <span className={styles.btn_span} style={{ color: "#80B4D3" }}>
-                <i className="fab fa-trello"></i>
-              </span>
-              <span
-                className={styles.btn_span_name}
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  color: "#80B4D3",
-                }}
-              >
-                Trello
-              </span>
-            </NavLink>
-          </div>
-          <div className={styles.right_menu}>
-            <div className={styles.btn_menu_logo}>
-              <NavLink
-                to={ROUTE_URLS.PROFILE}
-                activeClassName={styles.active}
-                style={{ textDecoration: "none" }}
-              >
-                <span className={styles.user_logo}>S</span>
-              </NavLink>
-            </div>
-          </div>
-        </div>
-        {routes.map((route: AppRoutes, i: number) =>
-          route.isHidden ? null : (
-            <Link key={i} to={route.path}>
-              {route.title}
-            </Link>
-          )
-        )}
-        <button onClick={this.logOut}>log out</button>
-      </header>
-    );
-  }
-
   private renderContent() {
-    console.log(this.state);
-
     return (
       <main>
         <Switch>
           {routes.map(this.renderRoute)}
           <Route
             path={ROUTE_URLS.OAUTH}
-            render={(props: RouteChildrenProps) => (
-              <Oauth
-                {...props}
-                onSetToken={this.setToken}
-                onSetBoards={this.setBoards}
-                onSetProfile={this.setProfile}
-                token_storage_key={TOKEN_STRORAGE_KEY}
-              />
-            )}
+            render={(props: RouteChildrenProps) => <Oauth {...props} />}
           />
           <Redirect to={ROUTE_URLS.NOT_FOUND} />
         </Switch>
@@ -216,19 +49,7 @@ class App extends React.Component<any, AppState> {
   }
   private renderRoute = (route: any, i: number) => {
     if (route.isProtected) {
-      return (
-        <PrivateRoute
-          {...route}
-          key={i}
-          isAuthenticated={this.isLoggedIn}
-          render={() =>
-            route.render({
-              boards: [...this.state.boards],
-              userProfile: this.state.userProfile,
-            })
-          }
-        />
-      );
+      return <PrivateRoute {...route} key={i} render={() => route.render()} />;
     } else {
       return (
         <Route
@@ -238,8 +59,6 @@ class App extends React.Component<any, AppState> {
           render={(props) =>
             route.render({
               ...props,
-              boards: [...this.state.boards],
-              userProfile: this.state.userProfile,
             })
           }
         />
@@ -250,12 +69,19 @@ class App extends React.Component<any, AppState> {
   public render() {
     return (
       <div>
-        {this.renderHeader()}
+        <Header logOut={this.logOut} />
         {this.renderContent()}
       </div>
     );
   }
 }
 
+const mapStateToDispatch = (dispatch: any) => {
+  return {
+    logOut: () => dispatch(resetState()),
+  };
+};
+
 const AppWithRouter = withRouter(App);
-export { AppWithRouter as App };
+const ConnectedApp = connect(undefined, mapStateToDispatch)(AppWithRouter);
+export { ConnectedApp as App };

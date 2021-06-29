@@ -1,0 +1,71 @@
+.footer_btn {
+  border: none;
+  outline: none;
+  color: #5e6c84;
+  display: block;
+  flex: 1 0 auto;
+  margin: 2px 0 8px 8px;
+  padding: 4px 8px;
+  position: relative;
+  text-decoration: none;
+}
+.footer_btn:hover {
+  background-color: rgb(172, 172, 172);
+  border-radius: 3px;
+  color: #fff;
+}
+.footer_btn:active {
+  background-color: rgb(151, 151, 151);
+}
+.plus {
+  font-size: 13px;
+  margin-right: 5px;
+}
+.disc {
+  font-size: 13px;
+  float: right;
+  margin: 0 8px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.add_card {
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgb(9 30 66 / 25%);
+  flex: 1 1 auto;
+  min-height: 50px;
+  position: relative;
+  text-decoration: none;
+  z-index: 0;
+  color: #172b4d;
+  margin: 0 8px;
+  padding: 10px;
+  outline: none;
+  border: transparent;
+}
+.btns_wrapp {
+  flex: 1 1 auto;
+  display: flex;
+  margin: 8px;
+}
+.btn_add {
+  padding: 5px 8px;
+  background-color: #0079bf;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.btn_close {
+  outline: none;
+  border: none;
+  font-size: 22px;
+  font-weight: 100;
+  color: #5e6c84;
+  cursor: pointer;
+}

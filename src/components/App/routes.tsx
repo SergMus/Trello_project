@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Redirect, RouteChildrenProps } from "react-router";
+import { Board } from "../Board/Board";
 import { Dashboard } from "../Dashboard/Dashboard";
 import { Login } from "../Login/Login";
 import { NotFound } from "../NotFound/NotFound";
@@ -13,6 +14,7 @@ export enum ROUTE_URLS {
   USER_PROFILE = "/profile",
   OAUTH = "/oauth",
   PROFILE = "/profile",
+  BOARD = "/board"
 }
 
 export interface AppRoutes {
@@ -52,5 +54,11 @@ export const routes: Array<AppRoutes> = [
     path: ROUTE_URLS.NOT_FOUND,
     isHidden: true,
     render: (props: RouteChildrenProps) => <NotFound {...props} />,
+  },
+  {
+    path: ROUTE_URLS.BOARD,
+    render: (props: any) => <Board {...props} />,
+    title: "board",
+    isProtected: true,
   },
 ];

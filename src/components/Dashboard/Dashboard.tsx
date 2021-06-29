@@ -1,34 +1,92 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteChildrenProps } from "react-router";
-import { increaseCount } from "../../store/action";
-import { AppState } from "../../store/reducer";
-import { TestModel, Board } from "../../types";
+import { RouteChildrenProps, RouterProps } from "react-router";
+import { AppState, getProfile } from "../../store";
+import { TestModel } from "../../types";
 import styles from "./Dashboard.module.css";
+import { fetchBoards, getBoards, setSelectedId } from "../../store/boards";
+import { Boards } from "../Boards/Boards";
 
 interface IDashboardProps extends TestModel {
-  countChanged?: number;
-  boards: Array<Board>;
-  onIncrease: () => void;
+  boards: Array<any>;
+  profile: any;
+  onFetchBoards: () => void;
+  onSelected: (id: string) => any;
 }
 
 class Dashboard extends React.Component<IDashboardProps> {
-  goBack() {
-    // this.props.history.goBack();
+  componentDidMount() {
+    this.props.onFetchBoards!();
   }
-  increase = () => {
-    this.props.onIncrease();
+
+  private setBoardId = (id: string) => {
+    this.props.onSelected(id);
   };
+
   render() {
     return (
-      <div onClick={this.goBack}>
-        <h2> Dashboards</h2>
-        <p>{this.props.countChanged}</p>
-        <button onClick={this.increase}>ADD</button>
-        <div style={{ display: "flex" }}>
-          {this.props.boards.map((item: any) => {
-            return <div className={styles.board}>{item.name}</div>;
-          })}
+      <div className={styles.container_root}>
+        <div className={styles.container_sticky}>
+          <div className={styles.left_menu}>
+            <div className={styles.navbar}>
+              <h1>Меню</h1>
+              <ul className={styles.tab_section}>
+                <li className={styles.item}>
+                  <span className={styles.span_icon}>
+                    <i className="fas fa-door-open"></i>
+                  </span>
+                  Начало работы
+                </li>
+                <li className={styles.item}>
+                  <span className={styles.span_icon}>
+                    <i className="far fa-heart"></i>
+                  </span>
+                  Важные события
+                </li>
+                <li className={styles.item}>
+                  <span className={styles.span_icon}>
+                    <i className="fas fa-table"></i>
+                  </span>
+                  Таблицы
+                </li>
+                <li className={styles.item}>
+                  <span className={styles.span_icon}>
+                    <i className="fas fa-user-friends"></i>
+                  </span>
+                  Участники
+                </li>
+                <li className={styles.item}>
+                  <span className={styles.span_icon}>
+                    <i className="fas fa-cog"></i>
+                  </span>
+                  Настройки
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className={styles.right_menu}>
+            <div className={styles.content}>
+              <div className={styles.content_title}>
+                ВАШИ РАБОЧИЕ ПРОСТРАНСТВА
+              </div>
+              <div className={styles.all_boards}>
+                <div className={styles.all_boards_header}>
+                  <div className={styles.header_icon}>
+                    {this.props.profile
+                      ? this.props.profile[0].memberCreator.initials
+                      : ""}
+                  </div>
+                  <div className={styles.header_title}>Активные доски</div>
+                </div>
+                <div className={styles.all_boards_content}>
+                  {this.props.boards.map((item: any) => {
+                    return <Boards items={item} setBoardId={this.setBoardId} />;
+                  })}
+                  <div className={styles.create}>создать доску</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -37,12 +95,14 @@ class Dashboard extends React.Component<IDashboardProps> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    countChanged: state.count,
+    boards: getBoards(state),
+    profile: getProfile(state),
   };
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onIncrease: () => dispatch(increaseCount()),
+    onFetchBoards: () => dispatch(fetchBoards()),
+    onSelected: (id: string) => dispatch(setSelectedId(id)),
   };
 };
 

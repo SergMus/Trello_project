@@ -1,0 +1,4 @@
+export enum LISTS_TYPES {
+   FETCH_LISTS = "@@LISTS/FETCH_LISTS",
+   SET_LISTS = "@@LISTS/SET_LISTS"
+}

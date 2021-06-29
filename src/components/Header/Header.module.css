@@ -1,0 +1,97 @@
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.header {
+  min-height: 40px;
+  max-height: 40px;
+  overflow: hidden;
+}
+.header_container {
+  background-color: #026aa7;
+  box-sizing: border-box;
+  display: flex;
+  max-height: 40px;
+  overflow: hidden;
+  padding: 4px 4px;
+}
+.left_menu {
+  display: flex;
+  justify-content: flex-start;
+  flex-grow: 1;
+  flex-basis: 100%;
+}
+.center_menu {
+  display: block;
+  position: relative;
+  flex-shrink: 0;
+  height: 30px;
+  margin-top: 1px;
+}
+.right_menu {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  flex-basis: 100%;
+}
+.btn_menu {
+  border-radius: 3px;
+  border: 0;
+  text-decoration: none;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  color: #ffffff;
+  display: flex;
+  font-weight: bold;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 4px 0 0;
+  padding: 0;
+  white-space: nowrap;
+}
+.btn_span {
+  display: flex;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  color: #ffffff;
+}
+.btn_span_name {
+  overflow: hidden;
+  padding: 0 8px 0 2px;
+  max-width: 150px;
+  color: #ffffff;
+}
+.btn_menu_logo {
+  border-radius: 50%;
+  border: 0;
+  text-decoration: none;
+  align-items: center;
+  background-color: #dfe1e6;
+  box-shadow: none;
+  display: flex;
+  font-weight: bold;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 4px 0 0;
+  padding: 0;
+  white-space: nowrap;
+}
+.user_logo {
+  display: flex;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  color: #172b4d;
+}
+.logout {
+  background-color: #026aa7;
+  color: #dfe1e6;
+  border: 0;
+  cursor: pointer;
+}
+/* .active {
+  background-color: #065d8f;
+} */

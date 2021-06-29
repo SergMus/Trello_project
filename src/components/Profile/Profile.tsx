@@ -1,10 +1,20 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
 import styles from "./../Profile/Profile.module.css";
 
 export const Profile: React.FunctionComponent<any> = (props: any): any => {
-  const userProfile = props.userProfile[4].memberCreator;
+  const userProfile = useSelector(
+    (state: AppState) => state.auth.userProfile[4].memberCreator
+  );
   const [inputText, setInputText] = useState(userProfile.username);
+
+  useEffect(()=>{
+console.log('hi');
+
+
+  }, [userProfile]);
 
   const handleChangeInput = (e: any) => {
     setInputText(e.target.value);

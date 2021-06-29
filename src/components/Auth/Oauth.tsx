@@ -1,41 +1,36 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
+import { connect } from "react-redux";
 import { Redirect, RouteChildrenProps } from "react-router";
-import { Board } from "../../types";
+import { getToken } from "../../store/auth";
 import { setToLocalStorage } from "../../utils";
 import { ROUTE_URLS } from "../App/routes";
+import { setToken, fetchProfile } from "./../../store/auth";
 
 interface OauthProps extends RouteChildrenProps {
-  onSetToken: (token: string) => void;
-  onSetBoards: (boards: any) => void;
-  onSetProfile: (userProfile: any) => void;
-  token_storage_key: string;
+  onSetToken?: (token: string) => void;
+  onSetProfile?: (token: string) => void;
 }
 
-export const Oauth: FunctionComponent<OauthProps> = ({
+const Oauth: FunctionComponent<OauthProps> = ({
   location: { hash },
   onSetToken,
-  onSetBoards,
   onSetProfile,
-  token_storage_key,
 }: OauthProps) => {
   const token = hash.split("=")[1];
-  onSetToken(token);
-  setToLocalStorage(token_storage_key, token);
 
-  fetch(
-    `https://api.trello.com/1/members/me/boards?fields=name,url&key=${process.env.REACT_APP_API_KEY}&token=${token}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      onSetBoards(data);
-    });
-  fetch(
-    `https://api.trello.com/1/members/me/actions/?fields=avatarHash,fullName,initials,username&key=${process.env.REACT_APP_API_KEY}&token=${token}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      onSetProfile(data);
-    });
+  useEffect(() => onSetToken && onSetToken(token));
+  useEffect(() => onSetProfile && onSetProfile(token));
 
   return <Redirect to={ROUTE_URLS.DASHBOARD} />;
 };
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onSetToken: (token: string) => dispatch(setToken(token)),
+    onSetProfile: (token: string) => dispatch(fetchProfile(token)),
+  };
+};
+
+const connectedOauth = connect(undefined, mapDispatchToProps)(Oauth);
+
+export { connectedOauth as Oauth };

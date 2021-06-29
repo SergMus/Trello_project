@@ -1,0 +1,4 @@
+export enum CARDS_TYPES {
+   FETCH_CARDS = "@@CARDS/FETCH_CARDS",
+   SET_CARDS = "@@CARDS/SET_CARDS"
+}
